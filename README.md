@@ -1,0 +1,2 @@
+# QRDetectorAndTracker
+一个能定位二维码并跟踪其位置的程序，可用于摄像头对机器的定位
