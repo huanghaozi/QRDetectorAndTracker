@@ -2,10 +2,12 @@
 #define QRDETECTORANDTRACKER_H
 
 #include <vector>
+#include <iterator>
 #include <opencv2/opencv.hpp>
 #include <opencv2/tracking.hpp>
 #include <opencv2/imgproc/types_c.h>
 #include <zbar.h>
+#include <zbar/Symbol.h>
 
 class QRDetectorAndTracker
 {
@@ -14,16 +16,18 @@ public:
     void detect();
     void drawBound();
     void showPic(cv::String s);
-    int x, y;
+    std::vector<int> x, y;
     cv::Mat pic;
-    bool xyAvailable = false;
+    std::vector<bool> xyAvailable;
+    std::vector<std::string> qrChars;
 
 private:
     cv::Mat picGray;
 
     //Tracker
     cv::TrackerKCF::Params param;
-    cv::Ptr<cv::Tracker> tracker;
+    std::vector<cv::Ptr<cv::Tracker>> tracker;
+    std::vector<int> releaseFlag;
 
     //QRCode detector
     zbar::Image *imageZbar = NULL;
@@ -35,12 +39,12 @@ private:
     int width, height;
 
     //Mark Bound
-    std::vector<cv::Point> *rect = new std::vector<cv::Point>(4);
-    cv::Rect2d bbox;
+    std::vector<std::vector<cv::Point>> rect;
+    std::vector<cv::Rect2d> bbox;
 
     //Decision tree
-    bool newBboxAvailabel = false, inited = false;
-    int mode = 0;
+    std::vector<bool> newBboxAvailabel, inited;
+    std::vector<int> mode;
 };
 
 #endif // QRDETECTORANDTRACKER_H
