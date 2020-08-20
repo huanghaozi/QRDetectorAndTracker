@@ -31,3 +31,26 @@
     void drawBound(); //在检测到二维码的位置画个方框，存入pic变量中
     void showPic(cv::String s); //显示图像窗口，其中参数s为窗口标题
 ```
+
+## 示例
+```cpp
+    //初始化
+    QRDetectorAndTracker qr;
+    while(1) //主循环
+    {
+        //检测坐标
+        qr.detect();
+        //绘制方框并显示
+        qr.drawBound();
+        qr.showPic("Window");
+        //输出坐标，遍历xyAvailable
+        for(int i=0;i<std::distance(qr.xyAvailable.begin(), qr.xyAvailable.end());i++)
+        {
+            if(qr.xyAvailable[i]) //若坐标可用则输出
+                std::cout << qr.qrChars[i] << ": " << qr.x[i] << ", " << qr.y[i] << std::endl;
+        }
+        //循环延时，不加会卡死
+        if(cv::waitKey(1)==27)
+            break;
+    }
+```
